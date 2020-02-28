@@ -1,15 +1,21 @@
-#ifndef _CLIENTDATA_H
-#define _CLIENTDATA_H
+// ClientData.h
 
-#include <Arduino.h>
+#ifndef _CLIENTDATA_h
+#define _CLIENTDATA_h
+
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "arduino.h"
+#else
+#include "WProgram.h"
+#endif
 
 class ClientData {
 public:
 	ClientData();
-	int mClientNumber = -1;
-	String mData;
+	int8_t mClientNumber = -1;
+	String mData = "";
 
 private:
 };
 
-#endif // _CLIENTDATA_H
+#endif

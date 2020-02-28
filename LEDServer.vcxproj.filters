@@ -27,12 +27,30 @@
     <ClInclude Include="WifiServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pong_Bat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pong_Ball.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pong.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WifiServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pong_Bat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pong_Ball.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pong.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

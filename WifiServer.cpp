@@ -1,12 +1,10 @@
 #include "WifiServer.h"
 
 WifiServer::WifiServer() {
-	mDebugging = false;
-	mInputString = "";
 	mInputString.reserve(200); // Reserve 200 bytes for the inputString.
 }
 
-void WifiServer::init(bool isDebugging) {
+void WifiServer::setup(bool isDebugging) {
 	mDebugging = isDebugging;
 
 	initSerial();
@@ -113,12 +111,12 @@ void WifiServer::testReadWriteSerial() {
 //    Serial5.print(inputString); // Data to be sent.
 //  }
 
-ClientData WifiServer::readSerial() {
-	ClientData clientData;
+int8_t WifiServer::readSerial(String* dataString) {
+	//ClientData clientData;
 
 	while (Serial5.available()) {
 		char inChar = (char)Serial5.read();
-		//    if (SerialUSB) SerialUSB.write(inChar);
+		//if (SerialUSB) SerialUSB.write(inChar);
 		mInputString += inChar;
 	}
 
@@ -127,58 +125,73 @@ ClientData WifiServer::readSerial() {
 		int plusIndex = mInputString.indexOf("+");
 		if (plusIndex == -1) {
 			mInputString = "";
-			return clientData;
+			return -1;
 		}
 		else if (plusIndex > 0) {
 			mInputString = mInputString.substring(plusIndex);
-			return clientData;
 		}
 
 		int messageIndex = mInputString.indexOf("+IPD,");
-		if (messageIndex == -1) return clientData;
+		if (messageIndex == -1) return -1;
 
 		int playerIndex = mInputString.indexOf(",", messageIndex + 5);
-		if (playerIndex == -1) return clientData;
+		if (playerIndex == -1) return -1;
 
 		int dataIndex = mInputString.indexOf(":", playerIndex + 1);
-		if (dataIndex == -1) return clientData;
+		if (dataIndex == -1) return -1;
 
 		int dataLength = mInputString.substring(playerIndex + 1, dataIndex).toInt();
-		if (dataLength == 0) return clientData;
-		if (mInputString.length() < dataIndex + 1 + dataLength) return clientData;
+		if (dataLength == 0) return -1;
+		if (mInputString.length() < dataIndex + 1 + dataLength) return -1;
 
-		clientData.mClientNumber = mInputString.substring(messageIndex + 5, playerIndex).toInt();
-		clientData.mData = mInputString.substring(dataIndex + 1, dataIndex + 1 + dataLength);
+		int8_t clientNumber = mInputString.substring(messageIndex + 5, playerIndex).toInt();
+		*dataString += mInputString.substring(dataIndex + 1, dataIndex + 1 + dataLength);
+
+		mInputString = mInputString.substring(dataIndex + 1 + dataLength);
+
+		return clientNumber;
 
 		// For debugging print data recieved.
-	//    if (SerialUSB)
-	//    {
-	//      SerialUSB.print("Data received, client number: ");
-	//      SerialUSB.print(clientData.mClientNumber);
-	//      SerialUSB.print(", data length: ");
-	//      SerialUSB.print(dataLength);
-	//      SerialUSB.print(", data: ");
-	//      SerialUSB.println(clientData.mData);
-	//    }
+		/*if (SerialUSB)
+		{
+		  SerialUSB.print("Data received, client number: ");
+		  SerialUSB.print(clientNumber);
+		  SerialUSB.print(", data length: ");
+		  SerialUSB.print(dataLength);
+		  SerialUSB.print(", data: ");
+		  SerialUSB.println(data);
+		}*/
+
+		// TODO BB 2020-02-21. Håndter hvis der kommer flere kommandoer på én gang.
+		// F.eks.:
+		// Data received, client number: 0, data length: 36, data: PONG:P1=1PONG:P2=1PONG:P1=0PONG:P2=0
+		// Det er måske derfor strip går amok. fordi program crasher når det prøver at lave "1PONG:P2=1PONG:P1=0PONG:P2=0" fra ovenstående om til en int.
+		// Skal tilføje en terminerende karaktor når jeg sender kommando. F.eks. ";"
 
 	//    printFreeMemory();
 
 		// ----
 		// Do something with the data.
 		// ----
-		// If it is Heart Beat, return HB
-		if (clientData.mData.equals("HB")) {
+		// If it is Heart Beat, return HB.
+		/*if (clientData.mData.equals("HB")) {
 			String data2 = clientData.mData + ":" + String(freeMemory());
 			clientData.mData = data2;
 			writeToClient(clientData);
 			clientData.mClientNumber = -1;
 			clientData.mData = "";
-		}
+		}*/
 
-		mInputString = mInputString.substring(dataIndex + 1 + dataLength);
+		// If it is a message, return the message.
+		/*if (clientData.mData.startsWith("MSG:")) {
+			clientData.mData = clientData.mData.substring(4);
+			writeToClient(clientData);
+			clientData.mClientNumber = -1;
+			clientData.mData = "";
+		}*/
 	}
 
-	return clientData;
+	//return clientData;
 }
 
 // Print out free memory for debugging.
@@ -190,7 +203,7 @@ void WifiServer::printFreeMemory() {
 }
 
 // Write message to client.
-void WifiServer::writeToClient(ClientData clientData) {
+void WifiServer::writeToClient(int8_t clientNumber, String data) {
 	//  SerialUSB.print("writeToClient clientNumber: ");
 	//  SerialUSB.print(clientNumber);
 	//  SerialUSB.print(", data: [");
@@ -200,9 +213,9 @@ void WifiServer::writeToClient(ClientData clientData) {
 	//  SerialUSB.println();
 
 	Serial5.print("AT+CIPSEND=");
-	Serial5.print(clientData.mClientNumber); // Client number
+	Serial5.print(clientNumber); // Client number
 	Serial5.print(",");
-	Serial5.println(clientData.mData.length() + 2); // Data length + 2 bytes (CR and LF).
+	Serial5.println(data.length() + 2); // Data length + 2 bytes (CR and LF).
 	delay(2); // 2 is minimum. Maybe larger is better...
-	Serial5.println(clientData.mData); // Data to be sent.
+	Serial5.println(data); // Data to be sent.
 }

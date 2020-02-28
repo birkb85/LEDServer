@@ -1,24 +1,31 @@
-#ifndef _WIFISERVER_H
-#define _WIFISERVER_H
+// WifiServer.h
 
-#include <Arduino.h>
+#ifndef _WIFISERVER_h
+#define _WIFISERVER_h
+
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "arduino.h"
+#else
+#include "WProgram.h"
+#endif
+
 #include <MemoryFree.h>;
 #include "ClientData.h";
 
 class WifiServer {
 public:
 	WifiServer();
-	void init(bool isDebugging);
-	ClientData readSerial();
-	void writeToClient(ClientData clientData);
+	void setup(bool isDebugging);
+	int8_t readSerial(String* dataString);
+	void writeToClient(int8_t clientNumber, String data);
 
 private:
-	bool mDebugging;
-	String mInputString;
+	bool mDebugging = false;
+	String mInputString = "";
 	void initSerial();
 	void initWIFIServer();
 	void testReadWriteSerial();
 	void printFreeMemory();
 };
 
-#endif // _WIFISERVER_H
+#endif
