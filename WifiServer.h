@@ -15,12 +15,12 @@
 class WifiServer {
 public:
 	WifiServer();
-	void setup(bool isDebugging);
-	int8_t readSerial(String* dataString);
+	void setup();
+	int8_t readSerial(String& dataString);
 	void writeToClient(int8_t clientNumber, String data);
 
 private:
-	bool mDebugging = false;
+	const bool mDebugging = false;
 	String mInputString = "";
 	void initSerial();
 	void initWIFIServer();

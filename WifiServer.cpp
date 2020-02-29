@@ -1,27 +1,22 @@
-#include "WifiServer.h"
+#include "WifiServer.h";
 
 WifiServer::WifiServer() {
-	mInputString.reserve(200); // Reserve 200 bytes for the inputString.
+	mInputString.reserve(200);
 }
 
-void WifiServer::setup(bool isDebugging) {
-	mDebugging = isDebugging;
-
+void WifiServer::setup() {
 	initSerial();
-	if (!mDebugging) initWIFIServer();
+	initWIFIServer();
 }
 
 void WifiServer::initSerial() {
 	if (mDebugging) {
 		SerialUSB.begin(115200); // Communication with the host computer.
-		//while (!SerialUSB) {;} // Not required.
+		while (!SerialUSB) { ; } // Not required. But have to wait while connected to PC.
 	}
 
 	Serial5.begin(115200); // Communication with ESP8266.
 	while (!Serial5) { ; }
-
-	// Time enough to start make sure serial connection is initialized correctly.
-	delay(5000);
 }
 
 void WifiServer::initWIFIServer() {
@@ -81,42 +76,9 @@ void WifiServer::testReadWriteSerial() {
 	}
 }
 
-//// Overflødigt fra Loop...
-//  testReadWriteSerial();
-//// Testing send text to client.
-//  number++;
-//  if (number > (1000000))
-//  {
-//    number = 0;
-//    Serial5.print("AT+CIPSEND=");
-//    Serial5.print("0"); // Client number
-//    Serial5.print(",");
-//    Serial5.println("3"); // Data length.
-//    delay(10);
-//    Serial5.print("hej"); // Data to be sent. No CR LF.
-//  }
-//// Testing answer.
-//  while (Serial5.available())
-//  {
-//    char inChar = (char)Serial5.read();
-//    inputString += inChar;
-//  }
-//
-//  if (inputString.length() > 0)
-//  {
-//    Serial5.print("AT+CIPSEND=");
-//    Serial5.print("0"); // Client number
-//    Serial5.print(",");
-//    Serial5.println(inputString.length()); // Data length.
-//    Serial5.print(inputString); // Data to be sent.
-//  }
-
-int8_t WifiServer::readSerial(String* dataString) {
-	//ClientData clientData;
-
+int8_t WifiServer::readSerial(String& dataString) {
 	while (Serial5.available()) {
 		char inChar = (char)Serial5.read();
-		//if (SerialUSB) SerialUSB.write(inChar);
 		mInputString += inChar;
 	}
 
@@ -145,53 +107,14 @@ int8_t WifiServer::readSerial(String* dataString) {
 		if (mInputString.length() < dataIndex + 1 + dataLength) return -1;
 
 		int8_t clientNumber = mInputString.substring(messageIndex + 5, playerIndex).toInt();
-		*dataString += mInputString.substring(dataIndex + 1, dataIndex + 1 + dataLength);
+		dataString += mInputString.substring(dataIndex + 1, dataIndex + 1 + dataLength);
 
 		mInputString = mInputString.substring(dataIndex + 1 + dataLength);
 
 		return clientNumber;
-
-		// For debugging print data recieved.
-		/*if (SerialUSB)
-		{
-		  SerialUSB.print("Data received, client number: ");
-		  SerialUSB.print(clientNumber);
-		  SerialUSB.print(", data length: ");
-		  SerialUSB.print(dataLength);
-		  SerialUSB.print(", data: ");
-		  SerialUSB.println(data);
-		}*/
-
-		// TODO BB 2020-02-21. Håndter hvis der kommer flere kommandoer på én gang.
-		// F.eks.:
-		// Data received, client number: 0, data length: 36, data: PONG:P1=1PONG:P2=1PONG:P1=0PONG:P2=0
-		// Det er måske derfor strip går amok. fordi program crasher når det prøver at lave "1PONG:P2=1PONG:P1=0PONG:P2=0" fra ovenstående om til en int.
-		// Skal tilføje en terminerende karaktor når jeg sender kommando. F.eks. ";"
-
-	//    printFreeMemory();
-
-		// ----
-		// Do something with the data.
-		// ----
-		// If it is Heart Beat, return HB.
-		/*if (clientData.mData.equals("HB")) {
-			String data2 = clientData.mData + ":" + String(freeMemory());
-			clientData.mData = data2;
-			writeToClient(clientData);
-			clientData.mClientNumber = -1;
-			clientData.mData = "";
-		}*/
-
-		// If it is a message, return the message.
-		/*if (clientData.mData.startsWith("MSG:")) {
-			clientData.mData = clientData.mData.substring(4);
-			writeToClient(clientData);
-			clientData.mClientNumber = -1;
-			clientData.mData = "";
-		}*/
 	}
 
-	//return clientData;
+	return -1;
 }
 
 // Print out free memory for debugging.

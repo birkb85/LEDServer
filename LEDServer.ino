@@ -1,25 +1,26 @@
+#include <Adafruit_NeoPixel_ZeroDMA.h> //https://learn.adafruit.com/dma-driven-neopixels/overview
 #include "WifiServer.h";
 #include "ClientData.h";
 #include "Pong.h"
 
-/*
- * On first run, while debugging, set debugging to 'false' to reset and setup tcpserver. Then set debugging to 'true'.
- * When finished debugging, remember to set to false and upload.
- */
-const bool mDebugging = false;
 String mDataString = "";
 
-const int8_t mLedPin = 13;
+const int8_t mStatusLedPin = 13;
+
+const int8_t mLedStripPin = 5;
+const int16_t mLedStripCount = 592;
+Adafruit_NeoPixel_ZeroDMA  mStrip = Adafruit_NeoPixel_ZeroDMA(mLedStripCount, mLedStripPin, NEO_GRB);
 
 WifiServer mWifiServer;
 Pong mPong;
 
 enum Mode {
+	MODE_BOOTING,
 	MODE_MAIN,
 	MODE_SHOWCASE,
 	MODE_PONG
 };
-Mode mMode = MODE_MAIN;
+Mode mMode = MODE_BOOTING;
 
 enum DataType {
 	DATA_UNDEFINED,
@@ -31,36 +32,36 @@ enum DataType {
 };
 
 void setup() {
+	pinMode(mStatusLedPin, OUTPUT);
+	digitalWrite(mStatusLedPin, HIGH);
+
 	mDataString.reserve(200);
 
-	pinMode(mLedPin, OUTPUT);
-	digitalWrite(mLedPin, HIGH);
+	mStrip.begin();
+	mStrip.setBrightness(40);
+	mStrip.setPixelColor(0, mStrip.Color(0, 0, 255));
+	mStrip.show();
 
-	mWifiServer.setup(mDebugging);
-	mPong.setup();
+	mWifiServer.setup();
+	mPong.setup(mStrip);
 
-	digitalWrite(mLedPin, LOW);
+	digitalWrite(mStatusLedPin, LOW);
+
+	mStrip.setPixelColor(0, mStrip.Color(0, 0, 0));
+	mStrip.show();
+
+	mMode = MODE_PONG; // TODO BB 2020-02-29. Remove line after implementing other modes (boot, main..)..
 }
 
 void loop() {
+	readSerial();
+	modeLoop();
+}
 
-	//mPong.setButtonStateLast();
-
-	int8_t clientNumber = mWifiServer.readSerial(&mDataString);
+void readSerial() {
+	int8_t clientNumber = mWifiServer.readSerial(mDataString);
 	if (clientNumber >= 0 && mDataString.length() > 0) {
-		//if (SerialUSB) {
-		//	SerialUSB.print("Client data received. Client number: ");
-		//	SerialUSB.print(clientNumber);
-		//	SerialUSB.print(", data: ");
-		//	SerialUSB.println(mDataString);
-		//}
-
 		while (mDataString.length() > 0) {
-			//if (SerialUSB) {
-			//	SerialUSB.print("Data start: ");
-			//	SerialUSB.println(mDataString);
-			//}
-
 			DataType dataType = DATA_UNDEFINED;
 
 			int dataTypeEndIndex = mDataString.indexOf(":");
@@ -77,7 +78,6 @@ void loop() {
 			case DATA_HEART_BEAT:
 				mWifiServer.writeToClient(clientNumber, "HB:" + String(freeMemory()));
 				mDataString = mDataString.substring(4); //XX:;
-				//if (SerialUSB) SerialUSB.println("HB");
 				dataTypeHandled = true;
 				break;
 
@@ -86,7 +86,6 @@ void loop() {
 				if (dataEndIndex > 0) {
 					mWifiServer.writeToClient(clientNumber, mDataString.substring(dataTypeEndIndex + 1, dataEndIndex));
 					mDataString = mDataString.substring(dataEndIndex + 1);
-					//if (SerialUSB) SerialUSB.println("MSG");
 					dataTypeHandled = true;
 				}
 				break;
@@ -102,7 +101,6 @@ void loop() {
 				if (dataEndIndex > 0) {
 					mPong.setButtonState(mDataString.substring(dataTypeEndIndex + 1, dataEndIndex));
 					mDataString = mDataString.substring(dataEndIndex + 1);
-					//if (SerialUSB) SerialUSB.println(dataPong);
 					dataTypeHandled = true;
 				}
 				break;
@@ -112,37 +110,6 @@ void loop() {
 			}
 			if (dataTypeHandled) continue;
 
-			//if (mDataString.startsWith("HB;")) {
-			//	mWifiServer.writeToClient(clientNumber, "HB:" + String(freeMemory()));
-			//	mDataString = mDataString.substring(3);
-			//	//if (SerialUSB) SerialUSB.println("HB");
-			//	continue;
-			//}
-			//else if (mDataString.startsWith("MSG:")) {
-			//	int endIndex = mDataString.indexOf(";", 4);
-			//	if (endIndex > 0) {
-			//		mWifiServer.writeToClient(clientNumber, mDataString.substring(4, endIndex));
-			//		mDataString = mDataString.substring(endIndex + 1);
-			//		//if (SerialUSB) SerialUSB.println("MSG");
-			//		continue;
-			//	}
-			//}
-			//else if (mDataString.startsWith("PONG:")) {
-			//	int endIndex = mDataString.indexOf(";", 5);
-			//	if (endIndex > 0) {
-			//		mPong.setButtonState(mDataString.substring(5, endIndex));
-			//		mDataString = mDataString.substring(endIndex + 1);
-			//		//if (SerialUSB) SerialUSB.println(dataPong);
-			//		continue;
-			//	}
-			//}
-
-			//if (SerialUSB) {
-			//	SerialUSB.print("Break on: [");
-			//	SerialUSB.print(mDataString);
-			//	SerialUSB.println("]");
-			//}
-
 			mDataString = "";
 			break;
 		}
@@ -150,22 +117,24 @@ void loop() {
 	else {
 		mDataString = "";
 	}
+}
 
-	//ClientData clientData = mWifiServer.readSerial();
-	//if (!clientData.mClientNumber >= 0 && !clientData.mData.equals("")) {
-	//	if (SerialUSB) {
-	//		SerialUSB.print("Client data received, number: ");
-	//		SerialUSB.print(clientData.mClientNumber);
-	//		SerialUSB.print(", data: ");
-	//		SerialUSB.println(clientData.mData);
-	//	}
+void modeLoop() {
+	switch (mMode) {
+	case MODE_BOOTING:
+		break;
 
-	//	//if (clientData.mData.startsWith("PONG:")) {
-	//	//	clientData.mData = clientData.mData.substring(5);
-	//	//	mPong.setButtonState(clientData);
-	//	//	mPong.loop(); // TODO BB Testing..
-	//	//}
-	//}
+	case MODE_MAIN:
+		break;
 
-	mPong.loop();
+	case MODE_SHOWCASE:
+		break;
+
+	case MODE_PONG:
+		mPong.loop(mStrip);
+		break;
+
+	default:
+		break;
+	}
 }
