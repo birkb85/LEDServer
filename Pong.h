@@ -26,6 +26,13 @@ public:
 	void loop();
 
 private:
+	enum DataTypePong {
+		DATA_PONG_P1_PRESSED,
+		DATA_PONG_P1_RELEASED,
+		DATA_PONG_P2_PRESSED,
+		DATA_PONG_P2_RELEASED
+	};
+
 	unsigned long mMillis = 0;
 	unsigned long mMillisLast = 0;
 	const int8_t mLedPin = 5; //8;

@@ -14,6 +14,22 @@ const int8_t mLedPin = 13;
 WifiServer mWifiServer;
 Pong mPong;
 
+enum Mode {
+	MODE_MAIN,
+	MODE_SHOWCASE,
+	MODE_PONG
+};
+Mode mMode = MODE_MAIN;
+
+enum DataType {
+	DATA_UNDEFINED,
+	DATA_HEART_BEAT,
+	DATA_MESSAGE,
+	DATA_SET_MODE,
+	DATA_MAIN,
+	DATA_PONG
+};
+
 void setup() {
 	mDataString.reserve(200);
 
@@ -45,30 +61,81 @@ void loop() {
 			//	SerialUSB.println(mDataString);
 			//}
 
-			if (mDataString.startsWith("HB;")) {
+			DataType dataType = DATA_UNDEFINED;
+
+			int dataTypeEndIndex = mDataString.indexOf(":");
+			if (dataTypeEndIndex > 0) {
+				dataType = (DataType)mDataString.substring(0, dataTypeEndIndex).toInt();
+			}
+
+			int dataEndIndex = -1;
+			boolean dataTypeHandled = false;
+			switch (dataType) {
+			case DATA_UNDEFINED:
+				break;
+
+			case DATA_HEART_BEAT:
 				mWifiServer.writeToClient(clientNumber, "HB:" + String(freeMemory()));
-				mDataString = mDataString.substring(3);
+				mDataString = mDataString.substring(4); //XX:;
 				//if (SerialUSB) SerialUSB.println("HB");
-				continue;
-			}
-			else if (mDataString.startsWith("MSG:")) {
-				int endIndex = mDataString.indexOf(";", 4);
-				if (endIndex > 0) {
-					mWifiServer.writeToClient(clientNumber, mDataString.substring(4, endIndex));
-					mDataString = mDataString.substring(endIndex + 1);
+				dataTypeHandled = true;
+				break;
+
+			case DATA_MESSAGE:
+				dataEndIndex = mDataString.indexOf(";", dataTypeEndIndex + 1);
+				if (dataEndIndex > 0) {
+					mWifiServer.writeToClient(clientNumber, mDataString.substring(dataTypeEndIndex + 1, dataEndIndex));
+					mDataString = mDataString.substring(dataEndIndex + 1);
 					//if (SerialUSB) SerialUSB.println("MSG");
-					continue;
+					dataTypeHandled = true;
 				}
-			}
-			else if (mDataString.startsWith("PONG:")) {
-				int endIndex = mDataString.indexOf(";", 5);
-				if (endIndex > 0) {
-					mPong.setButtonState(mDataString.substring(5, endIndex));
-					mDataString = mDataString.substring(endIndex + 1);
+				break;
+
+			case DATA_SET_MODE:
+				break;
+
+			case DATA_MAIN:
+				break;
+
+			case DATA_PONG:
+				dataEndIndex = mDataString.indexOf(";", dataTypeEndIndex + 1);
+				if (dataEndIndex > 0) {
+					mPong.setButtonState(mDataString.substring(dataTypeEndIndex + 1, dataEndIndex));
+					mDataString = mDataString.substring(dataEndIndex + 1);
 					//if (SerialUSB) SerialUSB.println(dataPong);
-					continue;
+					dataTypeHandled = true;
 				}
+				break;
+
+			default:
+				break;
 			}
+			if (dataTypeHandled) continue;
+
+			//if (mDataString.startsWith("HB;")) {
+			//	mWifiServer.writeToClient(clientNumber, "HB:" + String(freeMemory()));
+			//	mDataString = mDataString.substring(3);
+			//	//if (SerialUSB) SerialUSB.println("HB");
+			//	continue;
+			//}
+			//else if (mDataString.startsWith("MSG:")) {
+			//	int endIndex = mDataString.indexOf(";", 4);
+			//	if (endIndex > 0) {
+			//		mWifiServer.writeToClient(clientNumber, mDataString.substring(4, endIndex));
+			//		mDataString = mDataString.substring(endIndex + 1);
+			//		//if (SerialUSB) SerialUSB.println("MSG");
+			//		continue;
+			//	}
+			//}
+			//else if (mDataString.startsWith("PONG:")) {
+			//	int endIndex = mDataString.indexOf(";", 5);
+			//	if (endIndex > 0) {
+			//		mPong.setButtonState(mDataString.substring(5, endIndex));
+			//		mDataString = mDataString.substring(endIndex + 1);
+			//		//if (SerialUSB) SerialUSB.println(dataPong);
+			//		continue;
+			//	}
+			//}
 
 			//if (SerialUSB) {
 			//	SerialUSB.print("Break on: [");

@@ -38,20 +38,44 @@ void Pong::setButtonState(String data) {
 	//	SerialUSB.println(clientData.mData);
 	//}
 
-	if (data.startsWith("P1=")) {
-		if (data.substring(3).toInt() == 1)
-			mButton1Pressed = true;
-		else
-			mButton1Released = true;
-		//mButton1State = data.substring(3).toInt();
+	DataTypePong dataTypePong = (DataTypePong)data.toInt();
+	switch (dataTypePong)
+	{
+	case DATA_PONG_P1_PRESSED:
+		mButton1Pressed = true;
+		break;
+
+	case DATA_PONG_P1_RELEASED:
+		mButton1Released = true;
+		break;
+
+	case DATA_PONG_P2_PRESSED:
+		mButton2Pressed = true;
+		break;
+
+	case DATA_PONG_P2_RELEASED:
+		mButton2Released = true;
+		break;
+
+	default:
+		break;
 	}
-	else if (data.startsWith("P2=")) {
-		if (data.substring(3).toInt() == 1)
-			mButton2Pressed = true;
-		else
-			mButton2Released = true;
-		//mButton2State = data.substring(3).toInt();
-	}
+
+
+	//if (data.startsWith("P1=")) {
+	//	if (data.substring(3).toInt() == 1)
+	//		mButton1Pressed = true;
+	//	else
+	//		mButton1Released = true;
+	//	//mButton1State = data.substring(3).toInt();
+	//}
+	//else if (data.startsWith("P2=")) {
+	//	if (data.substring(3).toInt() == 1)
+	//		mButton2Pressed = true;
+	//	else
+	//		mButton2Released = true;
+	//	//mButton2State = data.substring(3).toInt();
+	//}
 
 	//if (SerialUSB) {
 	//	SerialUSB.print("1: pressed: ");
