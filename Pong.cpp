@@ -11,6 +11,8 @@ void Pong::setup(Adafruit_NeoPixel_ZeroDMA& strip) {
 	mBat2.color = strip.Color(0, 255, 0);
 
 	mBall.color = strip.Color(0, 0, 255);
+
+	resetGame();
 }
 
 void Pong::resetGame() {

@@ -1,7 +1,6 @@
 #include "Booting.h"
 #include <Adafruit_NeoPixel_ZeroDMA.h> //https://learn.adafruit.com/dma-driven-neopixels/overview
 #include "WifiServer.h";
-#include "ClientData.h";
 #include "Pong.h"
 
 String mDataString = "";
@@ -13,6 +12,7 @@ const int16_t mLedStripCount = 592;
 Adafruit_NeoPixel_ZeroDMA  mStrip = Adafruit_NeoPixel_ZeroDMA(mLedStripCount, mLedStripPin, NEO_GRB);
 
 WifiServer mWifiServer;
+Booting mBooting;
 Pong mPong;
 
 enum Mode {
@@ -44,6 +44,7 @@ void setup() {
 	mStrip.show();
 
 	mWifiServer.setup();
+	mBooting.setup(mStrip);
 	mPong.setup(mStrip);
 
 	digitalWrite(mStatusLedPin, LOW);
@@ -121,11 +122,12 @@ void readSerial() {
 void modeLoop() {
 	switch (mMode) {
 	case MODE_BOOTING:
-
+		mBooting.loop(mStrip);
+		if (mBooting.finished()) mMode = MODE_MAIN;
 		break;
 
 	case MODE_MAIN:
-
+		mMode = MODE_PONG;
 		break;
 
 	case MODE_SHOWCASE:

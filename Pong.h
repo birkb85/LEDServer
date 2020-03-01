@@ -12,7 +12,6 @@
 #include <Adafruit_NeoPixel_ZeroDMA.h>
 #include "Pong_Ball.h"
 #include "Pong_Bat.h"
-#include "ClientData.h";
 
 class Pong
 {
@@ -20,7 +19,6 @@ public:
 	Pong();
 	void setup(Adafruit_NeoPixel_ZeroDMA& strip);
 	void setButtonState(String data);
-	void resetGame();
 	void loop(Adafruit_NeoPixel_ZeroDMA& strip);
 
 private:
@@ -47,6 +45,7 @@ private:
 	Pong_Bat mBat2;
 	Pong_Ball mBall;
 
+	void resetGame();
 	void updateGame(Adafruit_NeoPixel_ZeroDMA& strip);
 	void updateStrip(Adafruit_NeoPixel_ZeroDMA& strip);
 	void checkGameEnd(Adafruit_NeoPixel_ZeroDMA& strip);

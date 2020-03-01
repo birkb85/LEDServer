@@ -10,7 +10,6 @@
 #endif
 
 #include <MemoryFree.h>;
-#include "ClientData.h";
 
 class WifiServer {
 public:
