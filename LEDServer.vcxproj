@@ -106,6 +106,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Booting.h" />
     <ClInclude Include="ClientData.h">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -118,6 +119,7 @@
     <ClInclude Include="__vm\.LEDServer.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Booting.cpp" />
     <ClCompile Include="ClientData.cpp" />
     <ClCompile Include="Pong.cpp" />
     <ClCompile Include="Pong_Ball.cpp" />

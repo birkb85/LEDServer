@@ -20,6 +20,7 @@ public:
 	Pong();
 	void setup(Adafruit_NeoPixel_ZeroDMA& strip);
 	void setButtonState(String data);
+	void resetGame();
 	void loop(Adafruit_NeoPixel_ZeroDMA& strip);
 
 private:
@@ -38,15 +39,19 @@ private:
 	boolean mButton2Pressed = false;
 	boolean mButton2Released = false;
 
+	const int16_t mGoalX = 284;
+	const int16_t mBat1StartX = mGoalX - 100;
+	const int16_t mBat2StartX = mGoalX + 100;
+
 	Pong_Bat mBat1;
 	Pong_Bat mBat2;
 	Pong_Ball mBall;
 
-	void resetButtonState();
 	void updateGame(Adafruit_NeoPixel_ZeroDMA& strip);
 	void updateStrip(Adafruit_NeoPixel_ZeroDMA& strip);
 	void checkGameEnd(Adafruit_NeoPixel_ZeroDMA& strip);
-	void gameEnd(Adafruit_NeoPixel_ZeroDMA& strip, Pong_Bat bat);
+	void gameEnd(Adafruit_NeoPixel_ZeroDMA& strip, Pong_Bat& bat);
+	void resetButtonState();
 };
 
 #endif

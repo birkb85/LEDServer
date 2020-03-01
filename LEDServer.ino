@@ -1,3 +1,4 @@
+#include "Booting.h"
 #include <Adafruit_NeoPixel_ZeroDMA.h> //https://learn.adafruit.com/dma-driven-neopixels/overview
 #include "WifiServer.h";
 #include "ClientData.h";
@@ -49,8 +50,6 @@ void setup() {
 
 	mStrip.setPixelColor(0, mStrip.Color(0, 0, 0));
 	mStrip.show();
-
-	mMode = MODE_PONG; // TODO BB 2020-02-29. Remove line after implementing other modes (boot, main..)..
 }
 
 void loop() {
@@ -122,12 +121,15 @@ void readSerial() {
 void modeLoop() {
 	switch (mMode) {
 	case MODE_BOOTING:
+
 		break;
 
 	case MODE_MAIN:
+
 		break;
 
 	case MODE_SHOWCASE:
+
 		break;
 
 	case MODE_PONG:
