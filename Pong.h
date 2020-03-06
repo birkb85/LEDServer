@@ -36,9 +36,10 @@ private:
 	boolean mButton2Pressed = false;
 	boolean mButton2Released = false;
 
-	const int16_t mGoalX = 284;
-	const int16_t mBat1StartX = mGoalX - 100;
-	const int16_t mBat2StartX = mGoalX + 100;
+	const int16_t mGoalStartX = 283;
+	const int16_t mGoalEndX = 284;
+	const int16_t mBat1StartX = mGoalStartX - 100;
+	const int16_t mBat2StartX = mGoalEndX + 100;
 
 	Pong_Bat mBat1;
 	Pong_Bat mBat2;

@@ -23,7 +23,7 @@ void Pong::resetGame() {
 	mBat2.x = mBat2StartX - (mBat2.length - 1);
 
 	mBall.dir = random(2) == 0 ? -1 : 1;
-	mBall.x = mGoalX;
+	mBall.x = mGoalStartX;
 	mBall.spd = 1;
 }
 
@@ -146,13 +146,14 @@ void Pong::updateStrip(Adafruit_NeoPixel_ZeroDMA& strip) {
 
 	strip.setPixelColor(mBall.x, mBall.color);
 
-	strip.setPixelColor(mGoalX, strip.Color(255, 255, 255));
+	strip.setPixelColor(mGoalStartX, strip.Color(255, 255, 255));
+	strip.setPixelColor(mGoalEndX, strip.Color(255, 255, 255));
 }
 
 void Pong::checkGameEnd(Adafruit_NeoPixel_ZeroDMA& strip) {
-	if (mBat1.x + mBat1.length - 1 >= mGoalX)
+	if (mBat1.x + mBat1.length - 1 >= mGoalStartX)
 		gameEnd(strip, mBat1);
-	else if (mBat2.x <= mGoalX)
+	else if (mBat2.x <= mGoalEndX)
 		gameEnd(strip, mBat2);
 }
 

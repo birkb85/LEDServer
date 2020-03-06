@@ -28,7 +28,7 @@ private:
 	};
 	TransitionMode mTransitionMode = TRANSITION_MODE_DONE;
 
-	uint8_t mBrightness = 0;
+	uint8_t mIntensity = 0;
 	int16_t mX1Low = 0;
 	int16_t mX1High = 0;
 	int16_t mX2Low = 0;

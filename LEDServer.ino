@@ -150,5 +150,11 @@ void modeLoop() {
 		}
 	}
 
+	// Testing middle of wall.
+	//mStrip.setPixelColor(210, mStrip.Color(255, 0, 0)); // start side low
+	//mStrip.setPixelColor(357, mStrip.Color(255, 0, 0)); // start side high
+	//mStrip.setPixelColor(283, mStrip.Color(255, 0, 0)); // start middle
+	//mStrip.setPixelColor(284, mStrip.Color(255, 0, 0)); // end middle
+
 	mStrip.show();
 }
