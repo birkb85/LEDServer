@@ -30,10 +30,10 @@
     <ClInclude Include="Pong.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Booting.h">
+    <ClInclude Include="__vm\.LEDServer.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="__vm\.LEDServer.vsarduino.h">
+    <ClInclude Include="Transition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClCompile Include="Pong.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Booting.cpp">
+    <ClCompile Include="Transition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

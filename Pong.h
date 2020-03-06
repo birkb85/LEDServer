@@ -29,8 +29,7 @@ private:
 		DATA_PONG_P2_RELEASED
 	};
 
-	unsigned long mMillis = 0;
-	unsigned long mMillisLast = 0;
+	boolean mGameRunning = false;
 
 	boolean mButton1Pressed = false;
 	boolean mButton1Released = false;
@@ -46,6 +45,7 @@ private:
 	Pong_Ball mBall;
 
 	void resetGame();
+	void startGame();
 	void updateGame(Adafruit_NeoPixel_ZeroDMA& strip);
 	void updateStrip(Adafruit_NeoPixel_ZeroDMA& strip);
 	void checkGameEnd(Adafruit_NeoPixel_ZeroDMA& strip);

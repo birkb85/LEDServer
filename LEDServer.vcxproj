@@ -106,24 +106,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Booting.h" />
     <ClInclude Include="ClientData.h">
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="Pong.h" />
     <ClInclude Include="Pong_Ball.h" />
     <ClInclude Include="Pong_Bat.h" />
+    <ClInclude Include="Transition.h" />
     <ClInclude Include="WifiServer.h">
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="__vm\.LEDServer.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Booting.cpp" />
     <ClCompile Include="ClientData.cpp" />
     <ClCompile Include="Pong.cpp" />
     <ClCompile Include="Pong_Ball.cpp" />
     <ClCompile Include="Pong_Bat.cpp" />
+    <ClCompile Include="Transition.cpp" />
     <ClCompile Include="WifiServer.cpp" />
   </ItemGroup>
   <PropertyGroup>

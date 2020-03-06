@@ -1,27 +1,30 @@
-#include "Booting.h"
 #include <Adafruit_NeoPixel_ZeroDMA.h> //https://learn.adafruit.com/dma-driven-neopixels/overview
 #include "WifiServer.h";
+#include "Transition.h"
 #include "Pong.h"
 
 String mDataString = "";
 
 const int8_t mStatusLedPin = 13;
 
+unsigned long mMillis = 0;
+unsigned long mMillisLast = 0;
+
 const int8_t mLedStripPin = 5;
 const int16_t mLedStripCount = 592;
 Adafruit_NeoPixel_ZeroDMA  mStrip = Adafruit_NeoPixel_ZeroDMA(mLedStripCount, mLedStripPin, NEO_GRB);
 
 WifiServer mWifiServer;
-Booting mBooting;
+Transition mTransition;
 Pong mPong;
 
 enum Mode {
 	MODE_BOOTING,
 	MODE_MAIN,
-	MODE_SHOWCASE,
 	MODE_PONG
 };
 Mode mMode = MODE_BOOTING;
+Mode mModeNext = MODE_PONG;
 
 enum DataType {
 	DATA_UNDEFINED,
@@ -44,18 +47,24 @@ void setup() {
 	mStrip.show();
 
 	mWifiServer.setup();
-	mBooting.setup(mStrip);
 	mPong.setup(mStrip);
 
 	digitalWrite(mStatusLedPin, LOW);
 
 	mStrip.setPixelColor(0, mStrip.Color(0, 0, 0));
 	mStrip.show();
+
+	mTransition.doTransition(mStrip);
 }
 
 void loop() {
 	readSerial();
-	modeLoop();
+
+	mMillis = millis();
+	if (mMillis > mMillisLast + 20) {
+		mMillisLast = mMillis;
+		modeLoop();
+	}
 }
 
 void readSerial() {
@@ -120,18 +129,10 @@ void readSerial() {
 }
 
 void modeLoop() {
+	mStrip.clear();
+
 	switch (mMode) {
-	case MODE_BOOTING:
-		mBooting.loop(mStrip);
-		if (mBooting.finished()) mMode = MODE_MAIN;
-		break;
-
 	case MODE_MAIN:
-		mMode = MODE_PONG;
-		break;
-
-	case MODE_SHOWCASE:
-
 		break;
 
 	case MODE_PONG:
@@ -141,4 +142,13 @@ void modeLoop() {
 	default:
 		break;
 	}
+
+	mTransition.loop(mStrip);
+	if (mMode != mModeNext) {
+		if (mTransition.doModeNext()) {
+			mMode = mModeNext;
+		}
+	}
+
+	mStrip.show();
 }
