@@ -109,6 +109,7 @@
     <ClInclude Include="ClientData.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="Main.h" />
     <ClInclude Include="Pong.h" />
     <ClInclude Include="Pong_Ball.h" />
     <ClInclude Include="Pong_Bat.h" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientData.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pong.cpp" />
     <ClCompile Include="Pong_Ball.cpp" />
     <ClCompile Include="Pong_Bat.cpp" />

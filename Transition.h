@@ -17,7 +17,6 @@ public:
 	Transition();
 	void doTransition(Adafruit_NeoPixel_ZeroDMA& strip);
 	void loop(Adafruit_NeoPixel_ZeroDMA& strip);
-	void draw(Adafruit_NeoPixel_ZeroDMA& strip);
 	boolean doModeNext();
 
 private:
@@ -36,6 +35,8 @@ private:
 
 	void modeIn(Adafruit_NeoPixel_ZeroDMA& strip);
 	void modeOut(Adafruit_NeoPixel_ZeroDMA& strip);
+	void draw(Adafruit_NeoPixel_ZeroDMA& strip);
+	uint32_t getTransitionColor(Adafruit_NeoPixel_ZeroDMA& strip, int16_t position);
 };
 
 #endif

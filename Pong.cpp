@@ -66,7 +66,6 @@ void Pong::resetButtonState() {
 void Pong::loop(Adafruit_NeoPixel_ZeroDMA& strip) {
 	if (!mGameRunning) {
 		if (mButton1Pressed || mButton2Pressed) {
-			resetGame();
 			startGame();
 		}
 	}

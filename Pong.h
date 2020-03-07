@@ -18,6 +18,7 @@ class Pong
 public:
 	Pong();
 	void setup(Adafruit_NeoPixel_ZeroDMA& strip);
+	void resetGame();
 	void setButtonState(String data);
 	void loop(Adafruit_NeoPixel_ZeroDMA& strip);
 
@@ -45,7 +46,6 @@ private:
 	Pong_Bat mBat2;
 	Pong_Ball mBall;
 
-	void resetGame();
 	void startGame();
 	void updateGame(Adafruit_NeoPixel_ZeroDMA& strip);
 	void updateStrip(Adafruit_NeoPixel_ZeroDMA& strip);

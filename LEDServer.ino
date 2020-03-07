@@ -1,6 +1,7 @@
 #include <Adafruit_NeoPixel_ZeroDMA.h> //https://learn.adafruit.com/dma-driven-neopixels/overview
 #include "WifiServer.h";
 #include "Transition.h"
+#include "Main.h"
 #include "Pong.h"
 
 String mDataString = "";
@@ -16,6 +17,7 @@ Adafruit_NeoPixel_ZeroDMA  mStrip = Adafruit_NeoPixel_ZeroDMA(mLedStripCount, mL
 
 WifiServer mWifiServer;
 Transition mTransition;
+Main mMain;
 Pong mPong;
 
 enum Mode {
@@ -24,7 +26,7 @@ enum Mode {
 	MODE_PONG
 };
 Mode mMode = MODE_BOOTING;
-Mode mModeNext = MODE_PONG;
+Mode mModeNext = MODE_MAIN;
 
 enum DataType {
 	DATA_UNDEFINED,
@@ -47,6 +49,7 @@ void setup() {
 	mStrip.show();
 
 	mWifiServer.setup();
+	mMain.setup(mStrip);
 	mPong.setup(mStrip);
 
 	digitalWrite(mStatusLedPin, LOW);
@@ -100,6 +103,14 @@ void readSerial() {
 				break;
 
 			case DATA_SET_MODE:
+				dataEndIndex = mDataString.indexOf(";", dataTypeEndIndex + 1);
+				if (dataEndIndex > 0) {
+					mModeNext = (Mode)mDataString.substring(dataTypeEndIndex + 1, dataEndIndex).toInt();
+					if (mModeNext != mMode)
+						mTransition.doTransition(mStrip);
+					mDataString = mDataString.substring(dataEndIndex + 1);
+					dataTypeHandled = true;
+				}
 				break;
 
 			case DATA_MAIN:
@@ -133,6 +144,7 @@ void modeLoop() {
 
 	switch (mMode) {
 	case MODE_MAIN:
+		mMain.loop(mStrip);
 		break;
 
 	case MODE_PONG:
@@ -147,14 +159,19 @@ void modeLoop() {
 	if (mMode != mModeNext) {
 		if (mTransition.doModeNext()) {
 			mMode = mModeNext;
+			switch (mMode) {
+			case MODE_MAIN:
+				break;
+
+			case MODE_PONG:
+				mPong.resetGame();
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
-
-	// Testing middle of wall.
-	//mStrip.setPixelColor(210, mStrip.Color(255, 0, 0)); // start side low
-	//mStrip.setPixelColor(357, mStrip.Color(255, 0, 0)); // start side high
-	//mStrip.setPixelColor(283, mStrip.Color(255, 0, 0)); // start middle
-	//mStrip.setPixelColor(284, mStrip.Color(255, 0, 0)); // end middle
 
 	mStrip.show();
 }
