@@ -114,6 +114,12 @@ void readSerial() {
 				break;
 
 			case DATA_MAIN:
+				dataEndIndex = mDataString.indexOf(";", dataTypeEndIndex + 1);
+				if (dataEndIndex > 0) {
+					mMain.handleData(mDataString.substring(dataTypeEndIndex + 1, dataEndIndex));
+					mDataString = mDataString.substring(dataEndIndex + 1);
+					dataTypeHandled = true;
+				}
 				break;
 
 			case DATA_PONG:
