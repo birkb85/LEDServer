@@ -4,7 +4,7 @@ Main::Main() {
 }
 
 void Main::setup(Adafruit_NeoPixel_ZeroDMA& strip) {
-
+	mColor = strip.Color(0, 0, 255);
 }
 
 void Main::handleData(String data) {

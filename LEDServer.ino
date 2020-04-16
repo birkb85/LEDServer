@@ -15,6 +15,8 @@ const int8_t mLedStripPin = 5;
 const int16_t mLedStripCount = 592;
 Adafruit_NeoPixel_ZeroDMA  mStrip = Adafruit_NeoPixel_ZeroDMA(mLedStripCount, mLedStripPin, NEO_GRB);
 
+const uint8_t mBrightnessMin = 20; // About 20 amp when full lit. (can be set to min + 127 = 147 max).
+
 WifiServer mWifiServer;
 Transition mTransition;
 Main mMain;
@@ -32,6 +34,7 @@ enum DataType {
 	DATA_UNDEFINED,
 	DATA_HEART_BEAT,
 	DATA_MESSAGE,
+	DATA_SET_BRIGHTNESS,
 	DATA_SET_MODE,
 	DATA_MAIN,
 	DATA_PONG
@@ -97,6 +100,15 @@ void readSerial() {
 				dataEndIndex = mDataString.indexOf(";", dataTypeEndIndex + 1);
 				if (dataEndIndex > 0) {
 					mWifiServer.writeToClient(clientNumber, mDataString.substring(dataTypeEndIndex + 1, dataEndIndex));
+					mDataString = mDataString.substring(dataEndIndex + 1);
+					dataTypeHandled = true;
+				}
+				break;
+
+			case DATA_SET_BRIGHTNESS:
+				dataEndIndex = mDataString.indexOf(";", dataTypeEndIndex + 1);
+				if (dataEndIndex > 0) {
+					mStrip.setBrightness(mBrightnessMin + (mDataString.substring(dataTypeEndIndex + 1, dataEndIndex).toInt() >> 1));
 					mDataString = mDataString.substring(dataEndIndex + 1);
 					dataTypeHandled = true;
 				}
