@@ -32,10 +32,12 @@ private:
 
 	enum DataTypeMain {
 		DATA_MAIN_UNDEFINED,
-		DATA_MAIN_SET_MODE
+		DATA_MAIN_SET_MODE,
+		DATA_MAIN_COLOR
 	};
 
 	long firstPixelHue = 0;
+	uint32_t mColor = 0;
 
 	void loopBlink(Adafruit_NeoPixel_ZeroDMA& strip);
 	void loopWipe(Adafruit_NeoPixel_ZeroDMA& strip);

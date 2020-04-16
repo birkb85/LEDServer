@@ -21,6 +21,10 @@ void Main::handleData(String data) {
 			mModeMain = (ModeMain)data.substring(dataTypeIndex + 1).toInt();
 			break;
 
+		case DATA_MAIN_COLOR:
+			mColor = (uint32_t)data.substring(dataTypeIndex + 1).toInt();
+			break;
+
 		default:
 			break;
 		}
@@ -59,21 +63,7 @@ void Main::draw(Adafruit_NeoPixel_ZeroDMA& strip) {
 }
 
 void Main::loopBlink(Adafruit_NeoPixel_ZeroDMA& strip) {
-	// TODO BB 2020-04-14. Testing mode.
-	uint32_t color = strip.Color(255, 0, 0);
-	for (int16_t i = 0; i < strip.numPixels(); i++) {
-		strip.setPixelColor(i, strip.gamma32(color));
-	}
-
-	/*
-	void colorBlink(uint32_t color, int wait) {
-	  for(int i=0; i<strip.numPixels(); i++) { // For each pixel in strip...
-		strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
-	  }
-	  strip.show();                          //  Update strip to match
-	  delay(wait);                           //  Pause for a moment
-	}
-	*/
+	strip.fill(strip.gamma32(mColor), 0, strip.numPixels());
 }
 
 void Main::loopWipe(Adafruit_NeoPixel_ZeroDMA& strip) {
