@@ -41,6 +41,8 @@ private:
 	int8_t mWipeDir = 1;
 	int16_t mWipeX = 0;
 
+	int8_t mTheaterChaseNumber = 0;
+
 	long mFirstPixelHue = 0;
 
 	void loopBlink(Adafruit_NeoPixel_ZeroDMA& strip);
