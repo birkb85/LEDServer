@@ -38,7 +38,10 @@ private:
 
 	uint32_t mColor = 0;
 
-	long firstPixelHue = 0;
+	int8_t mWipeDir = 1;
+	int16_t mWipeX = 0;
+
+	long mFirstPixelHue = 0;
 
 	void loopBlink(Adafruit_NeoPixel_ZeroDMA& strip);
 	void loopWipe(Adafruit_NeoPixel_ZeroDMA& strip);

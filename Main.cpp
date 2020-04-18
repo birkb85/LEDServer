@@ -67,32 +67,9 @@ void Main::loopBlink(Adafruit_NeoPixel_ZeroDMA& strip) {
 }
 
 void Main::loopWipe(Adafruit_NeoPixel_ZeroDMA& strip) {
-	// TODO BB 2020-04-14. Testing mode.
-	uint32_t color = strip.Color(0, 255, 0);
-	for (int16_t i = 0; i < strip.numPixels(); i++) {
-		strip.setPixelColor(i, strip.gamma32(color));
-	}
-
-	/*
-	void colorWipe(uint32_t color, int wait) {
-	  static uint8_t dir = 0;
-	  if (dir == 0) {
-		for(int i=0; i<strip.numPixels(); i++) { // For each pixel in strip...
-		  strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
-		  strip.show();                          //  Update strip to match
-		  dir = 1;
-		  delay(wait);                           //  Pause for a moment
-		}
-	  } else {
-		for(int i=strip.numPixels()-1; i>=0; i--) { // For each pixel in strip...
-		  strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
-		  strip.show();                          //  Update strip to match
-		  dir = 0;
-		  delay(wait);                           //  Pause for a moment
-		}
-	  }
-	}
-	*/
+	mWipeX += mWipeDir;
+	if (mWipeX == 0 || mWipeX == strip.numPixels() - 1) mWipeDir *= -1;
+	strip.setPixelColor(mWipeX, strip.gamma32(mColor));
 }
 
 void Main::loopTheaterChase(Adafruit_NeoPixel_ZeroDMA& strip) {
@@ -135,14 +112,14 @@ void Main::loopTheaterChase(Adafruit_NeoPixel_ZeroDMA& strip) {
 
 void Main::loopRainbow(Adafruit_NeoPixel_ZeroDMA& strip) {
 	for (int16_t i = 0; i < strip.numPixels(); i++) {
-		uint16_t pixelHue = firstPixelHue + (i * 65536L / strip.numPixels());
+		uint16_t pixelHue = mFirstPixelHue + (i * 65536L / strip.numPixels());
 		strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
 	}
 
-	if (firstPixelHue < 65536)
-		firstPixelHue += 256;
+	if (mFirstPixelHue < 65536)
+		mFirstPixelHue += 256;
 	else
-		firstPixelHue = 0;
+		mFirstPixelHue = 0;
 }
 
 void Main::loopTheaterChaseRainbow(Adafruit_NeoPixel_ZeroDMA& strip) {
