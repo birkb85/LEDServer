@@ -26,20 +26,22 @@ private:
 		MODE_MAIN_WIPE,
 		MODE_MAIN_THEATER_CHASE,
 		MODE_MAIN_RAINBOW,
-		MODE_MAIN_THEATER_CHASE_RAINBOW
+		MODE_MAIN_THEATER_CHASE_RAINBOW,
+		MODE_MAIN_COMPASS
 	};
 	ModeMain mModeMain = MODE_MAIN_RAINBOW;
 
 	enum DataTypeMain {
 		DATA_MAIN_UNDEFINED,
 		DATA_MAIN_SET_MODE,
-		DATA_MAIN_COLOR
+		DATA_MAIN_COLOR,
+		DATA_MAIN_X
 	};
 
 	uint32_t mColor = 0;
 
-	int8_t mWipeDir = 1;
-	int16_t mWipeX = 0;
+	int8_t mDirection = 1;
+	int16_t mX = 0;
 
 	int8_t mTheaterChaseNumber = 0;
 
@@ -50,6 +52,7 @@ private:
 	void loopTheaterChase(Adafruit_NeoPixel_ZeroDMA& strip);
 	void loopRainbow(Adafruit_NeoPixel_ZeroDMA& strip);
 	void loopTheaterChaseRainbow(Adafruit_NeoPixel_ZeroDMA& strip);
+	void loopCompass(Adafruit_NeoPixel_ZeroDMA& strip);
 };
 
 #endif

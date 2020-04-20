@@ -25,6 +25,10 @@ void Main::handleData(String data) {
 			mColor = (uint32_t)data.substring(dataTypeIndex + 1).toInt();
 			break;
 
+		case DATA_MAIN_X:
+			mX = (int16_t)data.substring(dataTypeIndex + 1).toInt();
+			break;
+
 		default:
 			break;
 		}
@@ -53,6 +57,10 @@ void Main::loop(Adafruit_NeoPixel_ZeroDMA& strip) {
 		loopTheaterChaseRainbow(strip);
 		break;
 
+	case MODE_MAIN_COMPASS:
+		loopCompass(strip);
+		break;
+
 	default:
 		break;
 	}
@@ -67,9 +75,9 @@ void Main::loopBlink(Adafruit_NeoPixel_ZeroDMA& strip) {
 }
 
 void Main::loopWipe(Adafruit_NeoPixel_ZeroDMA& strip) {
-	mWipeX += mWipeDir;
-	if (mWipeX == 0 || mWipeX == strip.numPixels() - 1) mWipeDir *= -1;
-	strip.setPixelColor(mWipeX, strip.gamma32(mColor));
+	mX += mDirection;
+	if (mX == 0 || mX == strip.numPixels() - 1) mDirection *= -1;
+	strip.setPixelColor(mX, strip.gamma32(mColor));
 }
 
 void Main::loopTheaterChase(Adafruit_NeoPixel_ZeroDMA& strip) {
@@ -110,4 +118,8 @@ void Main::loopTheaterChaseRainbow(Adafruit_NeoPixel_ZeroDMA& strip) {
 		mFirstPixelHue += 256;
 	else
 		mFirstPixelHue = 0;
+}
+
+void Main::loopCompass(Adafruit_NeoPixel_ZeroDMA& strip) {
+	strip.setPixelColor(mX, strip.gamma32(mColor));
 }
