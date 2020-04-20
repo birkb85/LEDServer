@@ -27,6 +27,7 @@ void Main::handleData(String data) {
 
 		case DATA_MAIN_X:
 			mX = (int16_t)data.substring(dataTypeIndex + 1).toInt();
+			if (mX < 0 || mX >= 592) mX = 0;
 			break;
 
 		default:
