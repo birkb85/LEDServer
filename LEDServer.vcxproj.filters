@@ -39,7 +39,7 @@
     <ClInclude Include="Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Fireworks.h">
+    <ClInclude Include="Firework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Fireworks.cpp">
+    <ClCompile Include="Firework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

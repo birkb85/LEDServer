@@ -3,7 +3,7 @@
 #include "Transition.h"
 #include "Main.h"
 #include "Pong.h"
-#include "Fireworks.h"
+#include "Firework.h"
 
 String mDataString = "";
 
@@ -23,6 +23,7 @@ const uint8_t mBrightnessMax = 139;
 unsigned long mLoopMillis = 0;
 unsigned long mLoopMillisLast = 0;
 const uint8_t mLoopIntervalPong = 20;
+const uint8_t mLoopIntervalFirework = 20;
 // From 20 to 199 is 180 values, client should send in a range of 0-179.
 const uint8_t mLoopIntervalMin = 20;
 const uint8_t mLoopIntervalMax = 199;
@@ -39,7 +40,7 @@ enum Mode {
 	MODE_BOOTING,
 	MODE_MAIN,
 	MODE_PONG,
-	MODE_FIREWORKS
+	MODE_FIREWORK
 };
 Mode mMode = MODE_BOOTING;
 Mode mModeNext = MODE_MAIN;
@@ -53,7 +54,7 @@ enum DataType {
 	DATA_SET_MODE,
 	DATA_MAIN,
 	DATA_PONG,
-	DATA_FIREWORKS
+	DATA_FIREWORK
 };
 
 void setup() {
@@ -135,6 +136,10 @@ void readSerial() {
 						mPong.setButtonState(data);
 						break;
 
+					case DATA_FIREWORK:
+						//mFirework.handleData(data); // TODO BB 2020-04-21. Implement.
+						break;
+
 					default:
 						break;
 					}
@@ -186,6 +191,10 @@ void modeLoop() {
 		mPong.loop(mStrip);
 		break;
 
+	case MODE_FIREWORK:
+		//mFirework.loop(mStrip); // TODO BB 2020-04-21. Implement.
+		break;
+
 	default:
 		break;
 	}
@@ -202,6 +211,11 @@ void modeLoop() {
 				mLoopIntervalCurrent = mLoopIntervalPong;
 				mStripClear = true;
 				mPong.resetGame();
+				break;
+
+			case MODE_FIREWORK:
+				mLoopIntervalCurrent = mLoopIntervalFirework;
+				mStripClear = true;
 				break;
 
 			default:
