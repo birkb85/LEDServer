@@ -21,9 +21,9 @@ public:
 	void draw(Adafruit_NeoPixel_ZeroDMA& strip);
 
 private:
-	enum DataTypeFireworks {
-		DATA_FIREWORKS_UNDEFINED
-	};
+	//enum DataTypeFireworks {
+	//	DATA_FIREWORKS_UNDEFINED
+	//};
 };
 
 #endif
