@@ -15,8 +15,8 @@ Adafruit_NeoPixel_ZeroDMA  mStrip = Adafruit_NeoPixel_ZeroDMA(mLedStripCount, mL
 // About 50-60mA per Led when full lit.
 // About 20 A available.
 // A brightness value of about 139, when all LEDs are full lit is about 20 A.
-// From 40 to 139 is 100 values, client should send in a range of 0-99.
-const uint8_t mBrightnessMin = 40;
+// From 10 to 139 is 130 values, client should send in a range of 0-129.
+const uint8_t mBrightnessMin = 10;
 const uint8_t mBrightnessMax = 139;
 
 unsigned long mLoopMillis = 0;
