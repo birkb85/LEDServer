@@ -126,7 +126,7 @@ void WifiServer::printFreeMemory() {
 }
 
 // Write message to client.
-void WifiServer::writeToClient(int8_t clientNumber, String data) {
+void WifiServer::writeToClient(int8_t clientNumber, String& data) {
 	//  SerialUSB.print("writeToClient clientNumber: ");
 	//  SerialUSB.print(clientNumber);
 	//  SerialUSB.print(", data: [");

@@ -19,7 +19,7 @@ public:
 	Pong();
 	void setup(Adafruit_NeoPixel_ZeroDMA& strip);
 	void resetGame();
-	void setButtonState(String data);
+	void setButtonState(String& data);
 	void loop(Adafruit_NeoPixel_ZeroDMA& strip);
 
 private:

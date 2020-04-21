@@ -7,16 +7,11 @@ void Main::setup(Adafruit_NeoPixel_ZeroDMA& strip) {
 	mColor = strip.Color(0, 0, 255);
 }
 
-void Main::handleData(String data) {
+void Main::handleData(String& data) {
 	int dataTypeIndex = data.indexOf(":");
 	if (dataTypeIndex > 0) {
-		DataTypeMain dataTypeMain = DATA_MAIN_UNDEFINED;
-		dataTypeMain = (DataTypeMain)data.substring(0, dataTypeIndex).toInt();
-
+		DataTypeMain dataTypeMain = (DataTypeMain)data.substring(0, dataTypeIndex).toInt();
 		switch (dataTypeMain) {
-		case DATA_MAIN_UNDEFINED:
-			break;
-
 		case DATA_MAIN_SET_MODE:
 			mModeMain = (ModeMain)data.substring(dataTypeIndex + 1).toInt();
 			break;

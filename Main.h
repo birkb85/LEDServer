@@ -16,7 +16,7 @@ class Main
 public:
 	Main();
 	void setup(Adafruit_NeoPixel_ZeroDMA& strip);
-	void handleData(String data);
+	void handleData(String& data);
 	void loop(Adafruit_NeoPixel_ZeroDMA& strip);
 	void draw(Adafruit_NeoPixel_ZeroDMA& strip);
 
@@ -32,7 +32,6 @@ private:
 	ModeMain mModeMain = MODE_MAIN_RAINBOW;
 
 	enum DataTypeMain {
-		DATA_MAIN_UNDEFINED,
 		DATA_MAIN_SET_MODE,
 		DATA_MAIN_COLOR,
 		DATA_MAIN_X

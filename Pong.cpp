@@ -31,7 +31,7 @@ void Pong::startGame() {
 	mGameRunning = true;
 }
 
-void Pong::setButtonState(String data) {
+void Pong::setButtonState(String& data) {
 	DataTypePong dataTypePong = (DataTypePong)data.toInt();
 	switch (dataTypePong)
 	{

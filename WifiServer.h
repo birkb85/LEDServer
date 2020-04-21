@@ -16,7 +16,7 @@ public:
 	WifiServer();
 	void setup();
 	int8_t readSerial(String& dataString);
-	void writeToClient(int8_t clientNumber, String data);
+	void writeToClient(int8_t clientNumber, String& data);
 
 private:
 	const bool mDebugging = false;
