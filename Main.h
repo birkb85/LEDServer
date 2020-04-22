@@ -18,7 +18,7 @@ public:
 	void setup(Adafruit_NeoPixel_ZeroDMA& strip);
 	void handleData(String& data);
 	void loop(Adafruit_NeoPixel_ZeroDMA& strip);
-	void draw(Adafruit_NeoPixel_ZeroDMA& strip);
+	//void draw(Adafruit_NeoPixel_ZeroDMA& strip);
 
 private:
 	enum ModeMain {

@@ -22,6 +22,6 @@ void Firework::loop(Adafruit_NeoPixel_ZeroDMA& strip) {
 
 }
 
-void Firework::draw(Adafruit_NeoPixel_ZeroDMA& strip) {
-
-}
+//void Firework::draw(Adafruit_NeoPixel_ZeroDMA& strip) {
+//
+//}

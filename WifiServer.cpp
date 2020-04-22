@@ -1,7 +1,7 @@
 #include "WifiServer.h";
 
 WifiServer::WifiServer() {
-	mInputString.reserve(200);
+	mInputString.reserve(100);
 }
 
 void WifiServer::setup() {

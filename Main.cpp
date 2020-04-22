@@ -62,9 +62,9 @@ void Main::loop(Adafruit_NeoPixel_ZeroDMA& strip) {
 	}
 }
 
-void Main::draw(Adafruit_NeoPixel_ZeroDMA& strip) {
-
-}
+//void Main::draw(Adafruit_NeoPixel_ZeroDMA& strip) {
+//
+//}
 
 void Main::loopBlink(Adafruit_NeoPixel_ZeroDMA& strip) {
 	strip.fill(strip.gamma32(mColor), 0, strip.numPixels());

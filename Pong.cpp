@@ -98,6 +98,7 @@ void Pong::updateGame(Adafruit_NeoPixel_ZeroDMA& strip) {
 	}
 
 	mBall.update();
+	if ((mBall.x < (mBat1StartX - 20)) || (mBall.x > (mBat2StartX + (mBat2.length - 1) + 20))) mBall.update();
 	if (mBall.x < 0)
 	{
 		mBall.x += strip.numPixels();

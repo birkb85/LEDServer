@@ -35,6 +35,7 @@ WifiServer mWifiServer;
 Transition mTransition;
 Main mMain;
 Pong mPong;
+Firework mFirework;
 
 enum Mode {
 	MODE_BOOTING,
@@ -61,7 +62,7 @@ void setup() {
 	pinMode(mStatusLedPin, OUTPUT);
 	digitalWrite(mStatusLedPin, HIGH);
 
-	mDataString.reserve(200);
+	mDataString.reserve(100);
 
 	mStrip.begin();
 	mStrip.setBrightness(40);
@@ -71,6 +72,7 @@ void setup() {
 	mWifiServer.setup();
 	mMain.setup(mStrip);
 	mPong.setup(mStrip);
+	mFirework.setup(mStrip);
 
 	digitalWrite(mStatusLedPin, LOW);
 
@@ -94,6 +96,7 @@ void readSerial() {
 	int8_t clientNumber = mWifiServer.readSerial(mDataString);
 	if (clientNumber >= 0 && mDataString.length() > 0) {
 		while (mDataString.length() > 0) {
+			//if (SerialUSB) SerialUSB.println(mDataString); // TODO BB Comment out after test.
 			int dataTypeEndIndex = mDataString.indexOf(":");
 			if (dataTypeEndIndex > 0) {
 				int dataEndIndex = mDataString.indexOf(";", dataTypeEndIndex + 1);
@@ -137,19 +140,20 @@ void readSerial() {
 						break;
 
 					case DATA_FIREWORK:
-						//mFirework.handleData(data); // TODO BB 2020-04-21. Implement.
+						mFirework.handleData(data);
 						break;
 
 					default:
 						break;
 					}
-
-					continue;
+				}
+				else {
+					mDataString = "";
 				}
 			}
-
-			mDataString = "";
-			break;
+			else {
+				mDataString = "";
+			}
 		}
 	}
 	else {
@@ -192,7 +196,7 @@ void modeLoop() {
 		break;
 
 	case MODE_FIREWORK:
-		//mFirework.loop(mStrip); // TODO BB 2020-04-21. Implement.
+		mFirework.loop(mStrip);
 		break;
 
 	default:
