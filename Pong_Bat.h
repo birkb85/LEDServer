@@ -13,9 +13,9 @@ class Pong_Bat
 {
 public:
 	Pong_Bat();
-	int16_t x = 0;
-	int8_t length = 0;
-	uint32_t color = 0;
+	int16_t mX = 0;
+	int8_t mLength = 0;
+	uint32_t mColor = 0;
 
 private:
 };

@@ -4,5 +4,5 @@ Pong_Ball::Pong_Ball() {
 }
 
 void Pong_Ball::update() {
-    x += dir * spd;
+    mX += mDir * mSpd;
 }

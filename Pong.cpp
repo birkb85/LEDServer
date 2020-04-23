@@ -4,13 +4,13 @@ Pong::Pong() {
 }
 
 void Pong::setup(Adafruit_NeoPixel_ZeroDMA& strip) {
-	mBat1.length = 16;
-	mBat1.color = strip.Color(255, 0, 0);
+	mBat1.mLength = 16;
+	mBat1.mColor = strip.Color(255, 0, 0);
 
-	mBat2.length = 16;
-	mBat2.color = strip.Color(0, 255, 0);
+	mBat2.mLength = 16;
+	mBat2.mColor = strip.Color(0, 255, 0);
 
-	mBall.color = strip.Color(0, 0, 255);
+	mBall.mColor = strip.Color(0, 0, 255);
 
 	resetGame();
 }
@@ -18,13 +18,13 @@ void Pong::setup(Adafruit_NeoPixel_ZeroDMA& strip) {
 void Pong::resetGame() {
 	mGameRunning = false;
 
-	mBat1.x = mBat1StartX;
+	mBat1.mX = mBat1StartX;
 
-	mBat2.x = mBat2StartX - (mBat2.length - 1);
+	mBat2.mX = mBat2StartX - (mBat2.mLength - 1);
 
-	mBall.dir = random(2) == 0 ? -1 : 1;
-	mBall.x = mGoalStartX;
-	mBall.spd = 1;
+	mBall.mDir = random(2) == 0 ? -1 : 1;
+	mBall.mX = mGoalStartX;
+	mBall.mSpd = 1;
 }
 
 void Pong::startGame() {
@@ -82,90 +82,90 @@ void Pong::loop(Adafruit_NeoPixel_ZeroDMA& strip) {
 
 void Pong::updateGame(Adafruit_NeoPixel_ZeroDMA& strip) {
 	if (mButton1Pressed) {
-		if (mBall.x >= mBat1.x && mBall.x < (mBat1.x + mBat1.length) && mBall.dir == -1)
+		if (mBall.mX >= mBat1.mX && mBall.mX < (mBat1.mX + mBat1.mLength) && mBall.mDir == -1)
 		{
-			mBall.dir = 1;
-			mBat1.x = mBall.x;
+			mBall.mDir = 1;
+			mBat1.mX = mBall.mX;
 		}
 	}
 
 	if (mButton2Pressed) {
-		if (mBall.x >= mBat2.x && mBall.x < (mBat2.x + mBat2.length) && mBall.dir == 1)
+		if (mBall.mX >= mBat2.mX && mBall.mX < (mBat2.mX + mBat2.mLength) && mBall.mDir == 1)
 		{
-			mBall.dir = -1;
-			mBat2.x = mBall.x - (mBat2.length - 1);
+			mBall.mDir = -1;
+			mBat2.mX = mBall.mX - (mBat2.mLength - 1);
 		}
 	}
 
 	mBall.update();
-	if ((mBall.x < (mBat1StartX - 20)) || (mBall.x > (mBat2StartX + (mBat2.length - 1) + 20))) mBall.update();
-	if (mBall.x < 0)
+	if ((mBall.mX < (mBat1StartX - 20)) || (mBall.mX > (mBat2StartX + (mBat2.mLength - 1) + 20))) mBall.update();
+	if (mBall.mX < 0)
 	{
-		mBall.x += strip.numPixels();
-		mBat2.x -= mBat2.length;
+		mBall.mX += strip.numPixels();
+		mBat2.mX -= mBat2.mLength;
 	}
-	if (mBall.x > strip.numPixels() - 1)
+	if (mBall.mX > strip.numPixels() - 1)
 	{
-		mBall.x -= strip.numPixels();
-		mBat1.x += mBat1.length;
+		mBall.mX -= strip.numPixels();
+		mBat1.mX += mBat1.mLength;
 	}
 }
 
 void Pong::updateStrip(Adafruit_NeoPixel_ZeroDMA& strip) {
 	if (mButton1Pressed) {
-		for (int8_t i = 0; i < mBat1.length; i++) {
-			strip.setPixelColor(mBat1.x + i, mBat1.color);
+		for (int8_t i = 0; i < mBat1.mLength; i++) {
+			strip.setPixelColor(mBat1.mX + i, mBat1.mColor);
 		}
 	}
 	else if (mButton1Released) {
-		strip.setPixelColor(mBat1.x, mBat1.color);
-		strip.setPixelColor(mBat1.x + 1, mBat1.color);
-		strip.setPixelColor(mBat1.x + mBat1.length - 2, mBat1.color);
-		strip.setPixelColor(mBat1.x + mBat1.length - 1, mBat1.color);
+		strip.setPixelColor(mBat1.mX, mBat1.mColor);
+		strip.setPixelColor(mBat1.mX + 1, mBat1.mColor);
+		strip.setPixelColor(mBat1.mX + mBat1.mLength - 2, mBat1.mColor);
+		strip.setPixelColor(mBat1.mX + mBat1.mLength - 1, mBat1.mColor);
 	}
 	else {
-		strip.setPixelColor(mBat1.x, mBat1.color);
-		strip.setPixelColor(mBat1.x + mBat1.length - 1, mBat1.color);
+		strip.setPixelColor(mBat1.mX, mBat1.mColor);
+		strip.setPixelColor(mBat1.mX + mBat1.mLength - 1, mBat1.mColor);
 	}
 
 	if (mButton2Pressed) {
-		for (int8_t i = 0; i < mBat2.length; i++) {
-			strip.setPixelColor(mBat2.x + i, mBat2.color);
+		for (int8_t i = 0; i < mBat2.mLength; i++) {
+			strip.setPixelColor(mBat2.mX + i, mBat2.mColor);
 		}
 	}
 	else if (mButton2Released) {
-		strip.setPixelColor(mBat2.x, mBat2.color);
-		strip.setPixelColor(mBat2.x + 1, mBat2.color);
-		strip.setPixelColor(mBat2.x + mBat2.length - 2, mBat2.color);
-		strip.setPixelColor(mBat2.x + mBat2.length - 1, mBat2.color);
+		strip.setPixelColor(mBat2.mX, mBat2.mColor);
+		strip.setPixelColor(mBat2.mX + 1, mBat2.mColor);
+		strip.setPixelColor(mBat2.mX + mBat2.mLength - 2, mBat2.mColor);
+		strip.setPixelColor(mBat2.mX + mBat2.mLength - 1, mBat2.mColor);
 	}
 	else {
-		strip.setPixelColor(mBat2.x, mBat2.color);
-		strip.setPixelColor(mBat2.x + mBat2.length - 1, mBat2.color);
+		strip.setPixelColor(mBat2.mX, mBat2.mColor);
+		strip.setPixelColor(mBat2.mX + mBat2.mLength - 1, mBat2.mColor);
 	}
 
-	strip.setPixelColor(mBall.x, mBall.color);
+	strip.setPixelColor(mBall.mX, mBall.mColor);
 
 	strip.setPixelColor(mGoalStartX, strip.Color(255, 255, 255));
 	strip.setPixelColor(mGoalEndX, strip.Color(255, 255, 255));
 }
 
 void Pong::checkGameEnd(Adafruit_NeoPixel_ZeroDMA& strip) {
-	if (mBat1.x + mBat1.length - 1 >= mGoalStartX)
+	if (mBat1.mX + mBat1.mLength - 1 >= mGoalStartX)
 		gameEnd(strip, mBat1);
-	else if (mBat2.x <= mGoalEndX)
+	else if (mBat2.mX <= mGoalEndX)
 		gameEnd(strip, mBat2);
 }
 
 void Pong::gameEnd(Adafruit_NeoPixel_ZeroDMA& strip, Pong_Bat& bat) {
 	delay(500);
-	strip.fill(bat.color, 0, strip.numPixels());
+	strip.fill(bat.mColor, 0, strip.numPixels());
 	strip.show();
 	delay(200);
 	strip.clear();
 	strip.show();
 	delay(200);
-	strip.fill(bat.color, 0, strip.numPixels());
+	strip.fill(bat.mColor, 0, strip.numPixels());
 	strip.show();
 	delay(200);
 	strip.clear();

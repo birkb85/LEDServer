@@ -13,10 +13,10 @@ class Pong_Ball
 {
 public:
 	Pong_Ball();
-	int8_t dir = 0;
-	int16_t x = 0;
-	uint32_t color = 0;
-	int8_t spd = 0;
+	int8_t mDir = 0;
+	int16_t mX = 0;
+	uint32_t mColor = 0;
+	int8_t mSpd = 0;
 	void update();
 
 private:
