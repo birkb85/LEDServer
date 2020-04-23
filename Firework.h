@@ -10,6 +10,7 @@
 #endif
 
 #include <Adafruit_NeoPixel_ZeroDMA.h>
+#include "Firework_Rocket.h"
 
 class Firework
 {
@@ -22,8 +23,11 @@ public:
 
 private:
 	//enum DataTypeFirework {
-	//	DATA_FIREWORK_UNDEFINED
+	//	DATA_FIREWORK_
 	//};
+
+	#define ROCKETS_SIZE 1
+	Firework_Rocket mRockets[ROCKETS_SIZE];
 };
 
 #endif

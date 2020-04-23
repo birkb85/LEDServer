@@ -110,6 +110,8 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="Firework.h" />
+    <ClInclude Include="Firework_Particle.h" />
+    <ClInclude Include="Firework_Rocket.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Pong.h" />
     <ClInclude Include="Pong_Ball.h" />
@@ -123,6 +125,8 @@
   <ItemGroup>
     <ClCompile Include="ClientData.cpp" />
     <ClCompile Include="Firework.cpp" />
+    <ClCompile Include="Firework_Particle.cpp" />
+    <ClCompile Include="Firework_Rocket.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pong.cpp" />
     <ClCompile Include="Pong_Ball.cpp" />

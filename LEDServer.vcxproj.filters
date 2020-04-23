@@ -42,6 +42,12 @@
     <ClInclude Include="Firework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Firework_Rocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Firework_Particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientData.cpp">
@@ -66,6 +72,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Firework.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Firework_Rocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Firework_Particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
